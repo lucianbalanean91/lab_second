@@ -35,7 +35,9 @@ namespace projectTask.Models
         [EnumDataType(typeof(Stare))]
         public Stare State { get; set; }
         [DataType(DataType.Date)]
-        public DateTime CloseAt { get; set; }
+        public Nullable<DateTime> CloseAt { get; set; }
         public List<Comment> Comments { get; set; }
+        
+
     }
 }
