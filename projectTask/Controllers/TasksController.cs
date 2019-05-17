@@ -29,22 +29,6 @@ namespace projectTask.Controllers
         /// <summary>
         /// Gets all Tasks without filter
         /// </summary>
-        /// <remarks>
-        /// Sample request:
-        ///
-        ///     GET /tasks
-        ///         {
-        ///                 "id": 1,
-        ///                 "title": "Calculeaza aria unui dreptunghi",
-        ///                 "description": "laturile sunt egale",
-        ///                 "added": "2019-05-11T03:59:24.3376595",
-        ///                 "deadline": "2019-06-15T03:59:24.3407304",
-        ///                 "important": 2,
-        ///                 "state": 0,
-        ///                 "closeAt": "2019-06-15T03:59:24.341252",
-        ///                 "comments": []
-        ///         }
-        ///</remarks>
         /// <returns>A list of Tasks without filter</returns>
     [HttpGet]
         public IEnumerable<Task> Get()
@@ -109,7 +93,7 @@ namespace projectTask.Controllers
         ///</remarks>
         /// <param name="task">Optional,Add a new task to the fields</param>
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status418ImATeapot)]
         [HttpPost]
         public void Post([FromBody] Task task)
         {
