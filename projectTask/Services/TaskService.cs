@@ -35,7 +35,8 @@ namespace projectTask.Services
         public Task Delete(int id)
         {
 
-            var existing = context.Tasks.FirstOrDefault(t => t.Id == id);
+            var existing = context.Tasks.Include(t => t.Comments)
+                .FirstOrDefault(t => t.Id == id);
             if (existing == null)
             {
                 return null;

@@ -63,6 +63,7 @@ namespace projectTask
             // https://stackoverflow.com/questions/38138100/addtransient-addscoped-and-addsingleton-services-differences
             // Dependency Injection
             services.AddScoped<ITaskService, TaskService>();
+            services.AddScoped<ICommentService, CommentService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
