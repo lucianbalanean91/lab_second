@@ -74,7 +74,7 @@ namespace projectTask.Controllers
         ///
         ///     POST /tasks
         ///     {
-        ///             "id": 1,
+        ///             
         ///             "title": "Calculeaza aria unui dreptunghi",
         ///             "description": "laturile sunt egale",
         ///             "added": "2019-05-11T03:59:24.3376595",
@@ -84,7 +84,7 @@ namespace projectTask.Controllers
         ///             "closeAt": "2019-06-15T03:59:24.341252",
         ///             "comments": [
         ///   	                {
-        ///  	                    "id": 1,
+        ///  	                   
         ///	                        "text": "Se calculeaza greu",
         ///	                        "important": true
         ///                      }
@@ -103,6 +103,28 @@ namespace projectTask.Controllers
         /// <summary>
         /// Updating a task
         /// </summary>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST /tasks
+        ///     {
+        ///             "id": 1,
+        ///             "title": "Calculeaza aria unui dreptunghi",
+        ///             "description": "laturile sunt egale",
+        ///             "added": "2019-05-11T03:59:24.3376595",
+        ///             "deadline": "2019-06-15T03:59:24.3407304",
+        ///             "important": 2,
+        ///             "state": 0,
+        ///             "closeAt": "2019-06-15T03:59:24.341252",
+        ///             "comments": [
+        ///   	                {
+        ///  	                    "id": 1,
+        ///	                        "text": "Se calculeaza greu",
+        ///	                        "important": true
+        ///                      }
+        ///             ]
+        ///     }
+        ///</remarks>
         /// <param name="id">Specify the id to be modified</param>
         /// <param name="task">Specify task object in JSON format </param>
         /// <returns>Returns the modified object</returns>
