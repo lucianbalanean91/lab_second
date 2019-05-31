@@ -11,22 +11,22 @@ namespace Tests
 {
     public class TasksServiceTests
     {
-        private IOptions<AppSettings> config;
+        //private IOptions<AppSettings> config;
 
         [SetUp]
         public void Setup()
         {
-            config = Options.Create(new AppSettings
-            {
-                Secret = "dsadhjcghduihdfhdifd8ih"
-            });
+            //config = Options.Create(new AppSettings
+            //{
+            //    Secret = "dsadhjcghduihdfhdifd8ih"
+            //});
         }
 
         [Test]
-        public void CreateANewTask()
+        public void ValidCreateShouldANewTask()
         {
             var options = new DbContextOptionsBuilder<TasksDbContext>()
-              .UseInMemoryDatabase(databaseName: nameof(CreateANewTask))// "CreateANewTask")
+              .UseInMemoryDatabase(databaseName: nameof(ValidCreateShouldANewTask))// "CreateANewTask")
               .Options;
             using (var context = new TasksDbContext(options))
             {
@@ -51,10 +51,10 @@ namespace Tests
         }
 
         [Test]
-        public void DeleteExistingTask()
+        public void ValidDeleteShouldANewTask()
         {
             var options = new DbContextOptionsBuilder<TasksDbContext>()
-              .UseInMemoryDatabase(databaseName: nameof(DeleteExistingTask))// "DeleteExistingTask")
+              .UseInMemoryDatabase(databaseName: nameof(ValidDeleteShouldANewTask))// "DeleteExistingTask")
               .Options;
             using (var context = new TasksDbContext(options))
             {
@@ -77,54 +77,91 @@ namespace Tests
             }
         }
 
-    //    [Test]
-    //    public void UpdateExistingTask()
-    //    {
-    //        var options = new DbContextOptionsBuilder<TasksDbContext>()
-    //          .UseInMemoryDatabase(databaseName: nameof(UpdateExistingTask))// "UpdateExistingTask")
-    //          .Options;
-    //        using (var context = new TasksDbContext(options))
-    //        {
-    //            var tasksService = new TaskService(context);
-    //            var resultTaskPostModel = new lab2_restapi_1205_taskmgmt.ViewModels.TaskPostModel
-    //            {
-    //                Title = "Read3",
-    //                Description = "Read3",
-    //                Added = DateTime.Now,
-    //                Deadline = DateTime.Now.AddDays(15),
-    //                ClosedAt = null,
-    //                Comments = null
-    //            };
-    //            //  var existing = context.Tasks.AsNoTracking(tasksService.Create(resultTaskPostModel));
+        [Test]
+        public void GetAllShouldReturnCorrectNumberOfPages()
+        {
+            var options = new DbContextOptionsBuilder<TasksDbContext>()
+              .UseInMemoryDatabase(databaseName: nameof(GetAllShouldReturnCorrectNumberOfPages))
+              .Options;
+
+            using (var context = new TasksDbContext(options))
+            {
+
+                var commentService = new CommentService(context);
+                var taskService = new TaskService(context);
+                var addedTask = taskService.Create(new lab2_restapi_1205_taskmgmt.ViewModels.TaskPostModel
+                {
+                    Title = "Read1",
+                    Description = "Read1",
+                    Added = DateTime.Now,
+                    Deadline = DateTime.Now.AddDays(15),
+                    ClosedAt = null,
+                    Importance = "Medium",
+                    State = "InProgress",
+                    Comments = new List<Comment>
+                    {
+                        new Comment
+                        {
+                            Important = true,
+                            Text = "Read1"
+                        }
+                    }
+
+                });
+
+                var allTask = taskService.GetAll(1, DateTime.Now);
+                Assert.AreEqual(1, allTask.NumberOfPages);
+            }
+        }
+
+        //    [Test]
+        //    public void UpdateExistingTask()
+        //    {
+        //        var options = new DbContextOptionsBuilder<TasksDbContext>()
+        //          .UseInMemoryDatabase(databaseName: nameof(UpdateExistingTask))// "UpdateExistingTask")
+        //          .Options;
+        //        using (var context = new TasksDbContext(options))
+        //        {
+        //            var tasksService = new TaskService(context);
+        //            var resultTaskPostModel = new lab2_restapi_1205_taskmgmt.ViewModels.TaskPostModel
+        //            {
+        //                Title = "Read3",
+        //                Description = "Read3",
+        //                Added = DateTime.Now,
+        //                Deadline = DateTime.Now.AddDays(15),
+        //                ClosedAt = null,
+        //                Comments = null
+        //            };
+        //            //  var existing = context.Tasks.AsNoTracking(tasksService.Create(resultTaskPostModel));
 
 
 
-    //            List<Comment> comments = new List<Comment>();
-    //            Comment comment = new Comment();
-    //            comment.Id = 1;
-    //            comment.Text = "Write a book";
-    //            comment.Important = true;
-    //            comments.Add(comment);
+        //            List<Comment> comments = new List<Comment>();
+        //            Comment comment = new Comment();
+        //            comment.Id = 1;
+        //            comment.Text = "Write a book";
+        //            comment.Important = true;
+        //            comments.Add(comment);
 
-    //            var dateDeadline = DateTime.Now.AddDays(20);
+        //            var dateDeadline = DateTime.Now.AddDays(20);
 
-    //            var resultTask = new lab2_restapi_1205_taskmgmt.Models.Task
-    //            {
-    //                Title = "Read4",
-    //                Description = "Read4",
-    //                Added = DateTime.Now,
-    //                Deadline = dateDeadline,
-    //                ClosedAt = null,
-    //                Comments = comments
-    //            };
-    //            var savedTask = tasksService.Create(resultTaskPostModel);
-    //            tasksService.Upsert(savedTask.Id, resultTask);
+        //            var resultTask = new lab2_restapi_1205_taskmgmt.Models.Task
+        //            {
+        //                Title = "Read4",
+        //                Description = "Read4",
+        //                Added = DateTime.Now,
+        //                Deadline = dateDeadline,
+        //                ClosedAt = null,
+        //                Comments = comments
+        //            };
+        //            var savedTask = tasksService.Create(resultTaskPostModel);
+        //            tasksService.Upsert(savedTask.Id, resultTask);
 
-    //            Assert.AreEqual(savedTask.Title, "Read4");
-    //            Assert.AreEqual(savedTask.Description, "Read4");
-    //            Assert.AreEqual(savedTask.Deadline, dateDeadline);
-    //            Assert.AreEqual(savedTask.Comments, comments);
-    //        }
-    //    }
+        //            Assert.AreEqual(savedTask.Title, "Read4");
+        //            Assert.AreEqual(savedTask.Description, "Read4");
+        //            Assert.AreEqual(savedTask.Deadline, dateDeadline);
+        //            Assert.AreEqual(savedTask.Comments, comments);
+        //        }
+        //    }
     }
 }
