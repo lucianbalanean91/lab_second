@@ -57,7 +57,7 @@ namespace lab2_restapi_1205_taskmgmt.Services
             IQueryable<Task> result = context
                 .Tasks
                 .OrderBy(t => t.Id)
-                .Include(f => f.Comments);
+                .Include(c => c.Comments);
             PaginatedList<TaskGetModel> paginatedList = new PaginatedList<TaskGetModel>();
             paginatedList.CurrentPage = page;
 

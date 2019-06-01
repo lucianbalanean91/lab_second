@@ -18,7 +18,7 @@ namespace lab2_restapi_1205_taskmgmt.ViewModels
         public string State { get; set; }
         public List<Comment> Comments { get; set; }
 
-        public static TaskGetModel FromTask(Models.Task task)
+        public static TaskGetModel FromTask(Task task)
         {
             return new TaskGetModel
             {

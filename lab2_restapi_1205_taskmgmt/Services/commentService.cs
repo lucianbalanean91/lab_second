@@ -24,10 +24,12 @@ namespace lab2_restapi_1205_taskmgmt.Services
 
         public IEnumerable<CommentGetModel> GetAll(String filter)
         {
-            IQueryable<Task> result = context.Tasks.Include(c => c.Comments);
+            IQueryable<Task> result = context
+                .Tasks
+                .Include(c => c.Comments);
 
-            List<CommentGetModel> resultComments = new List<CommentGetModel>();
-            List<CommentGetModel> resultCommentsAll = new List<CommentGetModel>();
+            var resultComments = new List<CommentGetModel>();
+            var resultCommentsAll = new List<CommentGetModel>();
 
             foreach (Task task in result)
             {
@@ -62,6 +64,8 @@ namespace lab2_restapi_1205_taskmgmt.Services
                 return resultCommentsAll;
             }
             return resultComments;
+
         }
+
     }
 }
