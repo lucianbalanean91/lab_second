@@ -10,7 +10,7 @@ namespace lab2_restapi_1205_taskmgmt.Services
 {
     public interface ICommentService
     {
-        IEnumerable<CommentGetModel> GetAll(String filter);
+        IEnumerable<CommentGetModel> GetAll(string filter);
     }
 
     public class CommentService : ICommentService
@@ -22,14 +22,12 @@ namespace lab2_restapi_1205_taskmgmt.Services
             this.context = context;
         }
 
-        public IEnumerable<CommentGetModel> GetAll(String filter)
+        public IEnumerable<CommentGetModel> GetAll(string filter)
         {
-            IQueryable<Task> result = context
-                .Tasks
-                .Include(c => c.Comments);
+            IQueryable<Task> result = context.Tasks.Include(c => c.Comments);
 
-            var resultComments = new List<CommentGetModel>();
-            var resultCommentsAll = new List<CommentGetModel>();
+            List<CommentGetModel> resultComments = new List<CommentGetModel>();
+            List<CommentGetModel> resultCommentsAll = new List<CommentGetModel>();
 
             foreach (Task task in result)
             {
