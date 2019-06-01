@@ -21,31 +21,6 @@ namespace Tests
         }
 
         [Test]
-        public void ValidRegisterShouldCreateANewUser()
-        {
-            var options = new DbContextOptionsBuilder<TasksDbContext>()
-              .UseInMemoryDatabase(databaseName: nameof(ValidRegisterShouldCreateANewUser))// "ValidRegisterShouldCreateANewUser")
-              .Options;
-
-            using (var context = new TasksDbContext(options))
-            {
-                var userService = new UserService(context, config);
-                var addedUser = new lab2_restapi_1205_taskmgmt.ViewModels.RegisterPostModel
-                {
-                    Email = "pop@yahoo.com",
-                    FirstName = "Pop",
-                    LastName = "Mihai",
-                    Password = "pop123456",
-                    Username = "popmihai01"
-                };
-                var result = userService.Register(addedUser);
-
-                Assert.IsNotNull(result);
-                Assert.AreEqual(addedUser.Username, result.Username);
-            }
-        }
-
-        [Test]
         public void ValidUsernameAndPasswordShouldLoginSuccessfully()
         {
 
@@ -76,12 +51,38 @@ namespace Tests
                 var result = userService.Authenticate(added.Username, added.Password);
 
                 Assert.IsNotNull(result);
-                Assert.AreEqual(4, result.Id);
                 Assert.AreEqual(loggedIn.Username, result.Username);
             }
 
 
         }
+
+        [Test]
+        public void ValidRegisterShouldCreateANewUser()
+        {
+            var options = new DbContextOptionsBuilder<TasksDbContext>()
+              .UseInMemoryDatabase(databaseName: nameof(ValidRegisterShouldCreateANewUser))// "ValidRegisterShouldCreateANewUser")
+              .Options;
+
+            using (var context = new TasksDbContext(options))
+            {
+                var userService = new UserService(context, config);
+                var addedUser = new lab2_restapi_1205_taskmgmt.ViewModels.RegisterPostModel
+                {
+                    Email = "pop@yahoo.com",
+                    FirstName = "Pop",
+                    LastName = "Mihai",
+                    Password = "pop123456",
+                    Username = "popmihai01"
+                };
+                var result = userService.Register(addedUser);
+
+                Assert.IsNotNull(result);
+                Assert.AreEqual(addedUser.Username, result.Username);
+            }
+        }
+
+        
 
         [Test]
         public void ValidGetAllShouldDisplayAllUsers()
