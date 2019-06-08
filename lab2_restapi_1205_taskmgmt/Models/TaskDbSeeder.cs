@@ -36,6 +36,26 @@ namespace lab2_restapi_1205_taskmgmt.Models
                     State = 0
                 }
             );
+            //context.Users.AddRange(
+            //    new User
+            //    {
+            //        FirstName = "Balanel",
+            //        LastName = "Lucian",
+            //        Username = "bman",
+            //        Email = "bman@gmail.com",
+            //        Password = "1234567",
+            //        UserRole = UserRole.User_Manager
+            //    },
+
+            //    new User
+            //    {
+            //        FirstName = "Radu Gasca",
+            //        LastName = "Radu",
+            //        Username = "radu93",
+            //        Email = "radu@gmail.com",
+            //        Password = "1234567",
+            //        UserRole = UserRole.Admin
+            //    });
             context.SaveChanges(); // commit transaction
         }
     }

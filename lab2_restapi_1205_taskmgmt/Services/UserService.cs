@@ -1,5 +1,7 @@
 ﻿using lab2_restapi_1205_taskmgmt.Models;
 using lab2_restapi_1205_taskmgmt.ViewModels;
+using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -17,7 +19,13 @@ namespace lab2_restapi_1205_taskmgmt.Services
     {
         UserGetModel Authenticate(string username, string password);
         UserGetModel Register(RegisterPostModel register);
+        User GetCurentUser(HttpContext httpContext);
         IEnumerable<UserGetModel> GetAll();
+
+        UserGetModel GetById(int id);
+        User Create(UserPostModel userModel);
+        UserGetModel Upsert(int id, UserPostModel userPostModel, User userLogat);
+        UserGetModel Delete(int id,User addedBy);
     }
 
     public class UserService : IUserService
@@ -48,7 +56,10 @@ namespace lab2_restapi_1205_taskmgmt.Services
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, user.Username.ToString())
+                    new Claim(ClaimTypes.Name, user.Username.ToString()),
+                    new Claim(ClaimTypes.Role, user.UserRole.ToString()),
+                    new Claim(ClaimTypes.UserData, user.DateRegister.ToString())
+
                 }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
@@ -99,10 +110,21 @@ namespace lab2_restapi_1205_taskmgmt.Services
                 LastName = register.LastName,
                 FirstName = register.FirstName,
                 Password = ComputeSha256Hash(register.Password),
-                Username = register.Username
+                Username = register.Username,
+                DateRegister = DateTime.Now
+
             });
             dbcontext.SaveChanges();
-            return Authenticate(register.Username, register.Password); 
+            return Authenticate(register.Username, register.Password);
+        }
+
+        public User GetCurentUser(HttpContext httpContext)
+        {
+            string username = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Name).Value;
+            //string accountType = httpContext.User.Claims.FirstOrDefault(c => c.Type == ClaimTypes.AuthenticationMethod).Value;
+            //return _context.Users.FirstOrDefault(u => u.Username == username && u.AccountType.ToString() == accountType);
+
+            return dbcontext.Users.FirstOrDefault(u => u.Username == username);
         }
 
 
@@ -117,6 +139,109 @@ namespace lab2_restapi_1205_taskmgmt.Services
                 Token = null
             });
         }
+
+        public UserGetModel GetById(int id)
+        {
+            User user = dbcontext.Users
+                .FirstOrDefault(u => u.Id == id);
+            return UserGetModel.FromUser(user);
+        }
+
+        public User Create(UserPostModel userModel)
+        {
+            User toAdd = UserPostModel.ToUser(userModel);
+
+            dbcontext.Users.Add(toAdd);
+            dbcontext.SaveChanges();
+            return toAdd;
+
+        }
+
+
+        public UserGetModel Upsert(int id, UserPostModel user, User userLogat)
+        {
+            var existing = dbcontext.Users.AsNoTracking().FirstOrDefault(u => u.Id == id);
+            User toAdd = UserPostModel.ToUser(user);
+            if (existing == null)
+            {
+
+                dbcontext.Users.Add(toAdd);
+                dbcontext.SaveChanges();
+                return UserGetModel.FromUser(toAdd);
+            }
+            if (userLogat.UserRole.Equals(UserRole.User_Manager))
+            {
+                //  https://www.aspforums.net/Threads/289493/Get-Number-of-months-between-two-dates-in-C/
+                var dateRegister = userLogat.DateRegister;
+                var dateCurrent = DateTime.Now;
+                int months = dateCurrent.Subtract(dateRegister).Days / 30;
+                toAdd.Id = id;
+
+                if (months >= 6)
+                {
+                    dbcontext.Users.Update(toAdd);
+                    dbcontext.SaveChanges();
+                    return UserGetModel.FromUser(toAdd);
+                }
+                return null;
+                //  dbcontext.Users.Update(toAdd);
+                //dbcontext.SaveChanges();
+                //return toAdd;
+            }
+            if (userLogat.UserRole.Equals(UserRole.Admin))
+            {
+                toAdd.Id = id;
+                dbcontext.Users.Update(toAdd);
+                dbcontext.SaveChanges();
+                return UserGetModel.FromUser(toAdd);
+            }
+            return null;
+        }
+        public UserGetModel Delete(int id,User addedBy)
+        {
+            var existing = dbcontext.Users.FirstOrDefault(u => u.Id == id);
+            if (existing == null)
+            {
+                return null;
+            }
+            if (addedBy.UserRole.Equals(UserRole.User_Manager))
+            {
+                //  https://www.aspforums.net/Threads/289493/Get-Number-of-months-between-two-dates-in-C/
+                var dateRegister = addedBy.DateRegister;
+                var dateCurrent = DateTime.Now;
+                int months = dateCurrent.Subtract(dateRegister).Days / 30;
+               
+
+                if (months >= 6)
+                {
+                    dbcontext.Comments.RemoveRange(dbcontext.Comments.Where(u => u.Owner.Id == existing.Id));
+                    dbcontext.SaveChanges();
+                    dbcontext.Tasks.RemoveRange(dbcontext.Tasks.Where(u => u.Owner.Id == existing.Id));
+                    dbcontext.SaveChanges();
+
+                    dbcontext.Users.Remove(existing);
+                    dbcontext.SaveChanges();
+                    return UserGetModel.FromUser(existing);
+                }
+                return null;
+                //  dbcontext.Users.Update(toAdd);
+                //dbcontext.SaveChanges();
+                //return toAdd;
+            }
+            if (addedBy.UserRole.Equals(UserRole.Admin))
+            {
+                dbcontext.Comments.RemoveRange(dbcontext.Comments.Where(u => u.Owner.Id == existing.Id));
+                dbcontext.SaveChanges();
+                dbcontext.Tasks.RemoveRange(dbcontext.Tasks.Where(u => u.Owner.Id == existing.Id));
+                dbcontext.SaveChanges();
+
+                dbcontext.Users.Remove(existing);
+                dbcontext.SaveChanges();
+                return UserGetModel.FromUser(existing);
+            }
+            return null;
+        }
+
     }
 }
 

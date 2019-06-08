@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using lab2_restapi_1205_taskmgmt.Models;
 
 namespace lab2_restapi_1205_taskmgmt.Migrations
 {
     [DbContext(typeof(TasksDbContext))]
-    partial class TasksDbContextModelSnapshot : ModelSnapshot
+    [Migration("20190601081015_AddOwnerForTaskAndComment")]
+    partial class AddOwnerForTaskAndComment
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -77,8 +79,6 @@ namespace lab2_restapi_1205_taskmgmt.Migrations
                         .ValueGeneratedOnAdd()
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<DateTime>("DateRegister");
-
                     b.Property<string>("Email");
 
                     b.Property<string>("FirstName");
@@ -86,8 +86,6 @@ namespace lab2_restapi_1205_taskmgmt.Migrations
                     b.Property<string>("LastName");
 
                     b.Property<string>("Password");
-
-                    b.Property<int>("UserRole");
 
                     b.Property<string>("Username");
 

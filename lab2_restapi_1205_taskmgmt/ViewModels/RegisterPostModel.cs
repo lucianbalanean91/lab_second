@@ -1,4 +1,5 @@
-﻿using System;
+﻿using lab2_restapi_1205_taskmgmt.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,5 +15,6 @@ namespace lab2_restapi_1205_taskmgmt.ViewModels
         public string Email { get; set; }
         [StringLength(150, MinimumLength = 6)]
         public string Password { get; set; }
+           public DateTime dateRegister { get; set; }
     }
 }

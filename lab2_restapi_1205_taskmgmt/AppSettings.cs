@@ -1,4 +1,4 @@
-﻿namespace lab2_restapi_1205_taskmgmt.Services
+﻿namespace lab2_restapi_1205_taskmgmt
 {
     public class AppSettings
     {

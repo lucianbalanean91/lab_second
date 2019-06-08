@@ -11,6 +11,7 @@ namespace lab2_restapi_1205_taskmgmt.Services
     public interface ICommentService
     {
         IEnumerable<CommentGetModel> GetAll(String filter);
+        Comment Create(CommentPostModel commentPostModel);
     }
 
     public class CommentService : ICommentService
@@ -62,6 +63,17 @@ namespace lab2_restapi_1205_taskmgmt.Services
                 return resultCommentsAll;
             }
             return resultComments;
+        }
+
+
+        public Comment Create(CommentPostModel commentPostModel)
+        {
+            Comment toAdd = CommentPostModel.ToComment(commentPostModel);
+
+            context.Comments.Add(toAdd);
+            context.SaveChanges();
+            return toAdd;
+
         }
     }
 }

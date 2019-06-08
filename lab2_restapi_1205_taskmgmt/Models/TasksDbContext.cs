@@ -15,6 +15,7 @@ namespace lab2_restapi_1205_taskmgmt.Models
             builder.Entity<User>(entity => {
                 entity.HasIndex(u => u.Username).IsUnique();
             });
+         
         }
 
         // DbSet = Repository
