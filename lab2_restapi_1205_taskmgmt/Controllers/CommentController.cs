@@ -38,7 +38,7 @@ namespace lab2_restapi_1205_taskmgmt.Controllers
         [Authorize(Roles = "Regular,Admin")]
         // GET: api/Comments
         [HttpGet]
-        public IEnumerable<CommentGetModel> GetAll([FromQuery]String filter)
+        public IEnumerable<CommentGetModel> GetAll([FromQuery] string filter)
         {
             return commentService.GetAll(filter);
         }
