@@ -35,6 +35,8 @@ namespace lab2_restapi_1205_taskmgmt.Models
 
         public List<Comment> Comments { get; set; }
 
+        public User Owner { get; set; }
+
 
     }
 }

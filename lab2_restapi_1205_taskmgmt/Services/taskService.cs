@@ -12,9 +12,9 @@ namespace lab2_restapi_1205_taskmgmt.Services
     {
         PaginatedList<TaskGetModel> GetAll(int page, DateTime? from = null, DateTime? to = null);
 
-        Task Create(TaskPostModel task);
+        Task Create(TaskPostModel task, User addedBy);
 
-        Task Upsert(int id, Task task);
+        Task Upsert(int id, TaskPostModel task);
 
         Task Delete(int id);
 
@@ -30,10 +30,10 @@ namespace lab2_restapi_1205_taskmgmt.Services
             this.context = context;
         }
 
-        public Task Create(TaskPostModel task)
+        public Task Create(TaskPostModel task, User addedBy)
         {
             Task toAdd = TaskPostModel.ToTask(task);
-
+            toAdd.Owner = addedBy;
             context.Tasks.Add(toAdd);
             context.SaveChanges();
             return toAdd;
@@ -89,14 +89,16 @@ namespace lab2_restapi_1205_taskmgmt.Services
                  .FirstOrDefault(f => f.Id == id);
         }
 
-        public Task Upsert(int id, Task task)
+        public Task Upsert(int id, TaskPostModel task)
         {
-            var existing = context.Tasks.AsNoTracking().FirstOrDefault(f => f.Id == id);
+            Task update = TaskPostModel.ToTask(task);
+            var existing = context.Tasks.AsNoTracking()
+                .FirstOrDefault(t => t.Id == id);
             if (existing == null)
             {
-                context.Tasks.Add(task);
+                context.Tasks.Add(update);
                 context.SaveChanges();
-                return task;
+                return update;
             }
             if (task.State.ToString() == "Closed")
             {
@@ -106,10 +108,10 @@ namespace lab2_restapi_1205_taskmgmt.Services
             {
                 task.ClosedAt = null;
             }
-            task.Id = id;
-            context.Tasks.Update(task);
+            update.Id = id;
+            context.Tasks.Update(update);
             context.SaveChanges();
-            return task;
+            return update;
         }
     }
 }

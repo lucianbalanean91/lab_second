@@ -35,12 +35,34 @@ namespace lab2_restapi_1205_taskmgmt.Controllers
 
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        [Authorize]
+        [Authorize(Roles = "Regular,Admin")]
         // GET: api/Comments
         [HttpGet]
         public IEnumerable<CommentGetModel> GetAll([FromQuery] string filter)
         {
             return commentService.GetAll(filter);
+        }
+
+        /// <summary>
+        /// Add an new Comment
+        /// </summary>
+        ///   /// <remarks>
+        /// Sample response:
+        ///
+        ///     Post /comment
+        ///     {
+        ///        Text ="Write a book",
+        ///        Imporant = true,
+        ///     }
+        /// </remarks>
+        /// <param name="commentPostModel">The input comment to be added</param>
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [Authorize(Roles = "Regular,Admin")]
+        [HttpPost]
+        public void Post([FromBody] CommentPostModel commentPostModel)
+        {
+            commentService.Create(commentPostModel);
         }
     }
 }
