@@ -10,7 +10,7 @@ namespace lab2_restapi_1205_taskmgmt.ViewModels
         public string Username { get; set; }
         public string Email { get; set; }
         public string Token { get; set; }
-        public UserRole userRole { get; set; }
+      //  public UserRole userRole { get; set; }
 
 
         public static UserGetModel FromUser(User user)
@@ -20,7 +20,8 @@ namespace lab2_restapi_1205_taskmgmt.ViewModels
                 Id = user.Id,
                 Username = user.Username,
                 Email = user.Email,
-                userRole = user.UserRole
+                
+              //  userRole = user.UserRole
             };
         }
     }

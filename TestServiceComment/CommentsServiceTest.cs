@@ -44,7 +44,7 @@ namespace Tests
                 commentService.Create(added2);
 
                 // Act
-                var result = commentService.GetAll(null);
+                var result = commentService.GetAll(string.Empty);
 
                 // Assert
 

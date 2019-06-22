@@ -9,7 +9,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestServiceTask", "TestServ
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestServiceUser", "TestServiceUser\TestServiceUser.csproj", "{CB55349A-C98B-4F3C-9D90-5CB8100979E8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestServiceComment", "TestServiceComment\TestServiceComment.csproj", "{3B051453-D8EF-4666-BC66-4A9F46E6AA8B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TestServiceComment", "TestServiceComment\TestServiceComment.csproj", "{3B051453-D8EF-4666-BC66-4A9F46E6AA8B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestServiceUserRole", "UserRolesServiceTest\TestServiceUserRole.csproj", "{086DE964-00F1-4ECA-BE4F-6A8B62A76BA2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +35,10 @@ Global
 		{3B051453-D8EF-4666-BC66-4A9F46E6AA8B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B051453-D8EF-4666-BC66-4A9F46E6AA8B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B051453-D8EF-4666-BC66-4A9F46E6AA8B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{086DE964-00F1-4ECA-BE4F-6A8B62A76BA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{086DE964-00F1-4ECA-BE4F-6A8B62A76BA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{086DE964-00F1-4ECA-BE4F-6A8B62A76BA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{086DE964-00F1-4ECA-BE4F-6A8B62A76BA2}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -78,6 +78,7 @@ namespace lab2_restapi_1205_taskmgmt.Controllers
             var users = userService.GetAll();
             return Ok(users);
         }
+
         /// <summary>
         /// Find an user by the given id.
         /// </summary>
@@ -99,17 +100,17 @@ namespace lab2_restapi_1205_taskmgmt.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         // GET: api/Users/5
-        [Authorize(Roles = "Admin,User_Manager")]
         [HttpGet("{id}", Name = "GetUser")]
-        public IActionResult Get(int id)
+        public IActionResult GetByIdHistory(int id)
         {
-            var found = userService.GetById(id);
+            var found = userService.GetHistoryById(id);
             if (found == null)
             {
                 return NotFound();
             }
             return Ok(found);
         }
+
 
 
         /// <summary>
@@ -214,7 +215,7 @@ namespace lab2_restapi_1205_taskmgmt.Controllers
             var result = userService.Delete(id,userlogat);
             if (result == null)
             {
-                return NotFound("User with the given id not fount !");
+                return BadRequest(new { ErrorMessage = "User with the given id not fount !" });
             }
             return Ok(result);
         }

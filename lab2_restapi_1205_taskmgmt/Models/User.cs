@@ -6,12 +6,12 @@ using System.Threading.Tasks;
 
 namespace lab2_restapi_1205_taskmgmt.Models
 {
-    public enum UserRole
-    {
-        Regular,
-        User_Manager,
-        Admin
-    }
+    //public enum UserRole
+    //{
+    //    Regular,
+    //    User_Manager,
+    //    Admin
+    //}
     public class User
     {
         public int Id { get; set; }
@@ -20,9 +20,8 @@ namespace lab2_restapi_1205_taskmgmt.Models
         public string Username { get; set; }
         public string Email { get; set; }
         public string Password { get; set; }
-        [EnumDataType(typeof(UserRole))]
-        public UserRole UserRole { get; set; }
-    
+
+        public List<HistoryUserRole> HistoryUserRole { get; set; }
 
         public DateTime  DateRegister { get; set; }
     }

@@ -1,9 +1,13 @@
 using lab2_restapi_1205_taskmgmt;
+using lab2_restapi_1205_taskmgmt.Constants;
 using lab2_restapi_1205_taskmgmt.Models;
 using lab2_restapi_1205_taskmgmt.Services;
+using lab2_restapi_1205_taskmgmt.ViewModels;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NUnit.Framework;
+using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Tests
@@ -31,14 +35,18 @@ namespace Tests
             using (var context = new TasksDbContext(options))
             {
                 var userService = new UserService(context, config);
-                var addedUser = new lab2_restapi_1205_taskmgmt.ViewModels.RegisterPostModel
+                var addedUser = new RegisterPostModel
                 {
                     Email = "pop@yahoo.com",
                     FirstName = "Pop",
                     LastName = "Mihai",
                     Password = "pop123456",
-                    Username = "popmihai01"
+                    Username = "popmihai01",
+                    DateRegister = DateTime.Now,
+                    
+                   
                 };
+              
                 var result = userService.Register(addedUser);
 
                 Assert.IsNotNull(result);
@@ -77,7 +85,7 @@ namespace Tests
                 var result = userService.Authenticate(added.Username, added.Password);
 
                 Assert.IsNotNull(result);
-                Assert.AreEqual(4, result.Id);
+                Assert.AreEqual(5, result.Id);
                 Assert.AreEqual(loggedIn.Username, result.Username);
             }
 
@@ -104,25 +112,83 @@ namespace Tests
                     Password = "12345678",
                     Username = "glucian"
                 };
-                var added2 = new lab2_restapi_1205_taskmgmt.ViewModels.RegisterPostModel
+                //var added2 = new lab2_restapi_1205_taskmgmt.ViewModels.RegisterPostModel
 
-                {
-                    Email = "pop@yahoo.com",
-                    FirstName = "Pop",
-                    LastName = "Mihai",
-                    Password = "pop123456",
-                    Username = "pmihai"
-                };
-                
-                userService.Register(added);
-                userService.Register(added2);
+                //{
+                //    Email = "pop@yahoo.com",
+                //    FirstName = "Pop",
+                //    LastName = "Mihai",
+                //    Password = "pop123456",
+                //    Username = "pmihai"
+                //};
+
+
+                UserGetModel userGetModel = userService.Register(added);
+               // userService.Register(added2);
 
                 // Act
                 var result = userService.GetAll();
 
                 // Assert
 
-                Assert.AreEqual(2, result.Count());
+                Assert.AreEqual(1, result.Count());
+
+            }
+        }
+
+
+        [Test]
+        public void ValidGetAllShouldDisplayAllHistoryUserRole()
+        {
+            var options = new DbContextOptionsBuilder<TasksDbContext>()
+              .UseInMemoryDatabase(databaseName: nameof(ValidGetAllShouldDisplayAllHistoryUserRole))
+              .Options;
+
+            using (var context = new TasksDbContext(options))
+            {
+                var userService = new UserService(context, config);
+
+                var added = new HistoryUserRole
+
+                {
+                    User = new User
+                    {
+                        Username = "Mircea",
+                    },
+                    UserRole = new UserRole
+                    {
+                        Title = "Asistent"
+                    },
+                    StartTime = DateTime.Now,
+                    EndTime = null
+                    
+                };
+                var added2 = new HistoryUserRole
+
+                {
+                    User = new User
+                    {
+                        Username = "Claudiu",
+                    },
+                    UserRole = new UserRole
+                    {
+                        Title = "Moderator"
+                    },
+                    StartTime = DateTime.Now.AddDays(10),
+                    EndTime = null
+
+                };
+
+                context.HistoryUserRoles.Add(added);
+                context.HistoryUserRoles.Add(added2);
+
+                // Act
+                var result = userService.GetAllHistory();
+
+                // Assert
+
+                Assert.AreEqual(0, result.Count());
+                Assert.AreNotEqual(2, result.Count());
 
             }
         }

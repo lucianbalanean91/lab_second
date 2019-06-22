@@ -14,7 +14,9 @@ namespace lab2_restapi_1205_taskmgmt.ViewModels
         public string Email { get; set; }
         public string Password { get; set; }
         public string UserRole { get; set; }
-       // public DateTime dateRegister { get; set; }
+      //  public string UserRole { get; set; }
+        public DateTime DateRegister { get; set; }
+     
 
         private static string ComputeSha256Hash(string rawData)
         {
@@ -38,16 +40,16 @@ namespace lab2_restapi_1205_taskmgmt.ViewModels
 
         public static User ToUser(UserPostModel userModel)
         {
-            UserRole rol = Models.UserRole.Regular;
+            //UserRole rol = Models.UserRole.Regular;
 
-            if (userModel.UserRole == "User_Manager")
-            {
-                rol = Models.UserRole.User_Manager;
-            }
-            else if (userModel.UserRole == "Admin")
-            {
-                rol = Models.UserRole.Admin;
-            }
+            //if (userModel.UserRole == "User_Manager")
+            //{
+            //    rol = Models.UserRole.User_Manager;
+            //}
+            //else if (userModel.UserRole == "Admin")
+            //{
+            //    rol = Models.UserRole.Admin;
+            //}
 
             return new User
             {
@@ -56,7 +58,11 @@ namespace lab2_restapi_1205_taskmgmt.ViewModels
                 Username = userModel.UserName,
                 Email = userModel.Email,
                 Password = ComputeSha256Hash(userModel.Password),
-                UserRole = rol
+                DateRegister = DateTime.Now,
+               
+                
+               
+                //UserRole = rol
 
             };
         }
